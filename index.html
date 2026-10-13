@@ -1,0 +1,986 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CareSlot — Complete Mobile UX/UI</title>
+    <style>
+      :root {
+        --bg: #07100f;
+        --s: #0e1917;
+        --s2: #162521;
+        --t: #f3f7f4;
+        --m: #9aaea7;
+        --g: #43d49b;
+        --d: #ff6b73;
+        --w: #f4c96b;
+        --line: #ffffff14;
+        --phone: 430px;
+        font-family: Inter, system-ui, sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #040706;
+        color: var(--t);
+      }
+      button,
+      input {
+        font: inherit;
+      }
+      button {
+        border: 0;
+        background: none;
+        color: inherit;
+        cursor: pointer;
+      }
+      .shell {
+        max-width: 1240px;
+        margin: auto;
+        padding: 30px;
+        display: grid;
+        grid-template-columns: 430px 1fr;
+        gap: 65px;
+      }
+      .phone {
+        width: 430px;
+        height: 860px;
+        background: var(--bg);
+        border-radius: 38px;
+        overflow: hidden;
+        position: sticky;
+        top: 20px;
+        box-shadow:
+          0 35px 90px #000b,
+          0 0 0 1px #fff1;
+      }
+      .status {
+        height: 38px;
+        padding: 0 22px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+        font-weight: 800;
+      }
+      .app {
+        height: calc(100% - 102px);
+        overflow: auto;
+        scrollbar-width: none;
+      }
+      .app::-webkit-scrollbar {
+        display: none;
+      }
+      .nav {
+        height: 64px;
+        border-top: 1px solid var(--line);
+        background: #09110f;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        padding: 6px 8px;
+      }
+      .nav button {
+        font-size: 10px;
+        color: #71827b;
+        font-weight: 800;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        align-items: center;
+      }
+      .nav button.active {
+        color: #fff;
+      }
+      .nav i {
+        font-style: normal;
+        font-size: 19px;
+      }
+      .nav button.active i {
+        color: var(--g);
+      }
+      .brand {
+        font-size: 22px;
+        font-weight: 950;
+        letter-spacing: -0.05em;
+      }
+      .brand span {
+        color: var(--g);
+      }
+      .top {
+        padding: 18px 20px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #a1ebca, #39a77d);
+        display: grid;
+        place-items: center;
+        color: #062018;
+        font-size: 11px;
+        font-weight: 950;
+      }
+      .hello {
+        padding: 5px 20px 17px;
+      }
+      .hello small {
+        font-size: 11px;
+        color: var(--m);
+      }
+      .hello h1 {
+        font-size: 29px;
+        letter-spacing: -0.045em;
+        margin: 4px 0;
+      }
+      .card {
+        margin: 0 20px;
+        background: var(--s);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 16px;
+      }
+      .hero {
+        background: linear-gradient(135deg, #123a31, #155c46 55%, #0e211c);
+        position: relative;
+        overflow: hidden;
+      }
+      .hero:after {
+        content: "✚";
+        position: absolute;
+        right: 22px;
+        top: 18px;
+        font-size: 55px;
+        color: #ffffff0b;
+      }
+      .hero b {
+        font-size: 17px;
+      }
+      .hero p {
+        font-size: 11px;
+        color: #bad2c8;
+        line-height: 1.5;
+        max-width: 285px;
+      }
+      .primary,
+      .secondary {
+        height: 43px;
+        border-radius: 12px;
+        padding: 0 17px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .primary {
+        background: var(--g);
+        color: #052019;
+      }
+      .secondary {
+        background: var(--s2);
+        border: 1px solid var(--line);
+      }
+      .section {
+        padding: 23px 20px 0;
+      }
+      .head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 11px;
+      }
+      .head h2 {
+        font-size: 17px;
+        margin: 0;
+      }
+      .head span {
+        font-size: 10px;
+        color: var(--g);
+        font-weight: 900;
+      }
+      .search {
+        height: 45px;
+        margin: 0 20px;
+        background: var(--s);
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 12px;
+      }
+      .search input {
+        flex: 1;
+        border: 0;
+        background: none;
+        outline: 0;
+        color: #fff;
+        font-size: 13px;
+      }
+      .search input::placeholder {
+        color: #71817b;
+      }
+      .clinics {
+        display: flex;
+        gap: 10px;
+        overflow: auto;
+        scrollbar-width: none;
+      }
+      .clinic {
+        min-width: 210px;
+        text-align: left;
+        background: var(--s);
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        overflow: hidden;
+      }
+      .pic {
+        height: 100px;
+        background: linear-gradient(135deg, #163e36, #4d806e);
+        padding: 11px;
+        display: flex;
+        align-items: flex-end;
+      }
+      .pic b {
+        font-size: 12px;
+      }
+      .clinicInfo {
+        padding: 10px;
+      }
+      .clinicInfo strong {
+        display: block;
+        font-size: 11px;
+      }
+      .clinicInfo span {
+        font-size: 10px;
+        color: var(--m);
+      }
+      .specialties {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+      .specialty {
+        background: var(--s);
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        padding: 11px 3px;
+      }
+      .specialty i {
+        display: block;
+        font-style: normal;
+        font-size: 20px;
+      }
+      .specialty span {
+        font-size: 9px;
+        color: #b4c1bc;
+      }
+      .detailHero {
+        height: 190px;
+        background: linear-gradient(145deg, #173c34, #2e8062);
+        padding: 17px 20px;
+        display: flex;
+        align-items: flex-end;
+        position: relative;
+      }
+      .back {
+        position: absolute;
+        top: 14px;
+        left: 18px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #0005;
+        font-size: 22px;
+      }
+      .detailHero h1 {
+        font-size: 24px;
+        margin: 0 0 5px;
+      }
+      .detailHero p {
+        font-size: 10px;
+        margin: 0;
+        color: #d1e0da;
+      }
+      .detailBody {
+        padding: 18px 20px;
+      }
+      .rating {
+        font-size: 11px;
+        color: var(--m);
+        margin-bottom: 14px;
+      }
+      .rating b {
+        color: var(--w);
+      }
+      .copy {
+        font-size: 12px;
+        color: #bdc9c4;
+        line-height: 1.6;
+      }
+      .facts {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        border-block: 1px solid var(--line);
+        margin: 18px 0;
+      }
+      .facts div {
+        padding: 11px 5px;
+      }
+      .facts div + div {
+        border-left: 1px solid var(--line);
+      }
+      .facts small {
+        display: block;
+        color: #718079;
+        font-size: 8px;
+        text-transform: uppercase;
+      }
+      .facts b {
+        font-size: 10px;
+      }
+      .slotTitle {
+        font-size: 13px;
+        font-weight: 900;
+        margin-bottom: 9px;
+      }
+      .slots {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 7px;
+      }
+      .slot {
+        height: 38px;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        background: var(--s);
+        font-size: 10px;
+        font-weight: 800;
+      }
+      .slot.selected {
+        background: var(--g);
+        color: #052019;
+        border-color: var(--g);
+      }
+      .slot:disabled {
+        color: #4d5b56;
+        background: #0a100e;
+        text-decoration: line-through;
+      }
+      .steps {
+        display: flex;
+        gap: 5px;
+        padding: 10px 20px;
+      }
+      .steps i {
+        height: 3px;
+        flex: 1;
+        background: #26352f;
+        border-radius: 5px;
+      }
+      .steps i.on {
+        background: var(--g);
+      }
+      .form {
+        padding: 20px;
+      }
+      .label {
+        display: block;
+        font-size: 9px;
+        color: #82938d;
+        font-weight: 900;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .field {
+        width: 100%;
+        height: 45px;
+        background: var(--s);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 0 12px;
+        color: #fff;
+        margin-bottom: 14px;
+      }
+      .radio {
+        display: flex;
+        gap: 9px;
+        align-items: center;
+        width: 100%;
+        padding: 12px;
+        background: var(--s);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        margin-bottom: 8px;
+        text-align: left;
+        font-size: 11px;
+      }
+      .radio i {
+        width: 16px;
+        height: 16px;
+        border: 1px solid #718079;
+        border-radius: 50%;
+      }
+      .radio.on i {
+        border: 5px solid var(--g);
+      }
+      .summary {
+        background: var(--s);
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        padding: 14px;
+        margin-bottom: 16px;
+      }
+      .summary b,
+      .summary span {
+        display: block;
+      }
+      .summary b {
+        font-size: 13px;
+      }
+      .summary span {
+        font-size: 10px;
+        color: var(--m);
+        margin-top: 4px;
+      }
+      .confirm {
+        text-align: center;
+        padding: 55px 25px;
+      }
+      .check {
+        width: 68px;
+        height: 68px;
+        border-radius: 50%;
+        background: #153d30;
+        color: var(--g);
+        display: grid;
+        place-items: center;
+        font-size: 34px;
+        margin: 0 auto 17px;
+      }
+      .confirm h1 {
+        font-size: 25px;
+      }
+      .confirm p {
+        font-size: 11px;
+        line-height: 1.6;
+        color: var(--m);
+      }
+      .ticket {
+        text-align: left;
+        background: var(--s);
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        padding: 14px;
+        margin: 18px 0;
+      }
+      .ticket div {
+        display: flex;
+        justify-content: space-between;
+        padding: 7px 0;
+        font-size: 10px;
+      }
+      .ticket span {
+        color: var(--m);
+      }
+      .empty,
+      .state {
+        text-align: center;
+        padding: 55px 25px;
+        color: var(--m);
+        font-size: 11px;
+      }
+      .empty strong,
+      .state strong {
+        display: block;
+        color: #fff;
+        margin-bottom: 7px;
+      }
+      .spinner {
+        width: 28px;
+        height: 28px;
+        border: 3px solid #fff1;
+        border-top-color: var(--g);
+        border-radius: 50%;
+        margin: 0 auto 13px;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .profile {
+        padding: 25px 20px;
+      }
+      .setting {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        text-align: left;
+        padding: 15px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .setting b {
+        font-size: 12px;
+      }
+      .setting span {
+        display: block;
+        color: var(--m);
+        font-size: 9px;
+        margin-top: 3px;
+      }
+      .toast {
+        position: absolute;
+        bottom: 76px;
+        left: 50%;
+        transform: translate(-50%, 15px);
+        opacity: 0;
+        background: #f4f7f5;
+        color: #08110e;
+        padding: 9px 14px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 900;
+        transition: 0.2s;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+      .doc {
+        padding-top: 12px;
+      }
+      .kicker {
+        color: var(--g);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .doc h1 {
+        font-size: 48px;
+        letter-spacing: -0.055em;
+        margin: 6px 0 12px;
+      }
+      .doc h2 {
+        font-size: 20px;
+        margin: 32px 0 9px;
+      }
+      .doc p,
+      .doc li {
+        color: #9da9a5;
+        font-size: 14px;
+        line-height: 1.65;
+      }
+      .doc ul {
+        padding-left: 20px;
+      }
+      .note {
+        padding: 14px 16px;
+        border: 1px solid #43d49b35;
+        background: #43d49b0d;
+        border-radius: 14px;
+        color: #b9c7c1;
+        font-size: 13px;
+        line-height: 1.55;
+      }
+      .flow {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 7px;
+      }
+      .node {
+        padding: 8px 11px;
+        border: 1px solid #fff2;
+        border-radius: 9px;
+        font-size: 11px;
+        font-weight: 850;
+      }
+      .node.main {
+        border-color: var(--g);
+        color: var(--g);
+      }
+      .arrow {
+        color: #55645e;
+      }
+      .ia,
+      .screens {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+      .ia div,
+      .screens div {
+        background: #fff1;
+        border: 1px solid #fff1;
+        border-radius: 10px;
+        padding: 11px;
+      }
+      .ia b,
+      .screens b {
+        font-size: 11px;
+      }
+      .ia span,
+      .screens span {
+        display: block;
+        color: #788680;
+        font-size: 10px;
+        margin-top: 4px;
+        line-height: 1.4;
+      }
+      .tokens {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 7px;
+      }
+      .token {
+        border: 1px solid #fff1;
+        border-radius: 10px;
+        padding: 9px;
+        font-size: 10px;
+      }
+      .token i {
+        display: block;
+        height: 27px;
+        border-radius: 7px;
+        margin-bottom: 7px;
+      }
+      @media (max-width: 900px) {
+        .shell {
+          grid-template-columns: 1fr;
+          justify-items: center;
+          padding: 18px 14px;
+        }
+        .phone {
+          position: relative;
+          top: 0;
+          width: min(430px, 100%);
+          height: min(860px, 86vh);
+        }
+        .doc {
+          max-width: 620px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <main class="phone">
+        <div class="status"><span>9:41</span><span>● ● ▰</span></div>
+        <div id="app" class="app"></div>
+        <nav id="nav" class="nav"></nav>
+        <div id="toast" class="toast"></div>
+      </main>
+      <aside class="doc">
+        <div class="kicker">Task 11 · Complete Mobile App Experience</div>
+        <h1>CareSlot</h1>
+        <p>
+          <strong
+            >A mobile clinic-booking app that lets users find a suitable healthcare provider, choose
+            an available appointment time and leave with a confirmed booking.</strong
+          >
+        </p>
+        <div class="note">
+          <strong>Core product promise:</strong> Find a clinic → choose a service → select a time →
+          confirm the appointment. The prototype is one connected experience, not a collection of
+          unrelated screens.
+        </div>
+        <h2>1. App idea</h2>
+        <p>
+          <strong>Problem:</strong> finding an appropriate clinic and confirming availability can
+          involve calls, uncertainty and repeated back-and-forth.
+        </p>
+        <p>
+          <strong>Main user goal:</strong> book a clinic appointment at a convenient time and
+          receive a clear confirmation.
+        </p>
+        <h2>2. Core user journey</h2>
+        <div class="flow">
+          <span class="node main">Welcome</span><span class="arrow">→</span
+          ><span class="node">Authentication</span><span class="arrow">→</span
+          ><span class="node">Home</span><span class="arrow">→</span
+          ><span class="node">Find clinic</span><span class="arrow">→</span
+          ><span class="node">Details</span><span class="arrow">→</span
+          ><span class="node">Select slot</span><span class="arrow">→</span
+          ><span class="node">Patient form</span><span class="arrow">→</span
+          ><span class="node main">Success</span>
+        </div>
+        <h2>3. Information architecture</h2>
+        <div class="ia">
+          <div>
+            <b>Home</b
+            ><span>Upcoming appointment · quick booking · nearby clinics · specialties</span>
+          </div>
+          <div><b>Find</b><span>Search · clinic results · details · available slots</span></div>
+          <div><b>Appointments</b><span>Upcoming · past · appointment status</span></div>
+          <div><b>Profile</b><span>Personal details · notifications · privacy · support</span></div>
+        </div>
+        <h2>Navigation</h2>
+        <p>
+          Persistent bottom navigation provides four destinations:
+          <strong>Home, Find, Appointments and Profile.</strong> The booking process becomes a
+          focused task flow so users can complete the main action without distraction.
+        </p>
+        <h2>4. Main screens</h2>
+        <div class="screens">
+          <div><b>01 · Welcome</b><span>Value proposition + Get started</span></div>
+          <div><b>02 · Authentication</b><span>Sign in / create account</span></div>
+          <div><b>03 · Home</b><span>Upcoming booking + discovery</span></div>
+          <div><b>04 · Find</b><span>Search + clinic results</span></div>
+          <div><b>05 · Details</b><span>Clinic information + slots</span></div>
+          <div><b>06 · Booking</b><span>Patient information + payment method</span></div>
+          <div><b>07 · Confirmation</b><span>Appointment ticket + next actions</span></div>
+          <div><b>08 · Appointments</b><span>Confirmed/past bookings</span></div>
+        </div>
+        <h2>5. Important states</h2>
+        <ul>
+          <li><strong>Loading:</strong> checks nearby providers and availability.</li>
+          <li><strong>Empty:</strong> no search results or no past appointments.</li>
+          <li>
+            <strong>Error/recovery:</strong> search can be cleared or retried rather than trapping
+            the user.
+          </li>
+          <li><strong>Unavailable:</strong> booked appointment slots are visibly disabled.</li>
+          <li><strong>Disabled:</strong> Continue stays unavailable until a slot is selected.</li>
+          <li>
+            <strong>Success:</strong> confirmation presents clinic, service, date, time and status.
+          </li>
+        </ul>
+        <h2>6. UI design system</h2>
+        <div class="tokens">
+          <div class="token"><i style="background: #07100f"></i><b>Base</b><br />#07100F</div>
+          <div class="token"><i style="background: #0e1917"></i><b>Surface</b><br />#0E1917</div>
+          <div class="token"><i style="background: #43d49b"></i><b>Action</b><br />#43D49B</div>
+          <div class="token"><i style="background: #f3f7f4"></i><b>Text</b><br />#F3F7F4</div>
+        </div>
+        <p>
+          Consistent 8px spacing rhythm, 12–18px rounded components, high-contrast typography,
+          restrained green action colour and repeated card/button patterns create a coherent product
+          language.
+        </p>
+        <h2>Design rationale</h2>
+        <p>
+          Each screen answers the user's next question: <strong>What do I need?</strong> →
+          <strong>Where can I go?</strong> → <strong>When can I go?</strong> →
+          <strong>What do you need from me?</strong> → <strong>Is it booked?</strong>
+        </p>
+      </aside>
+    </div>
+    <script>
+      const clinics = [
+        {
+          id: 1,
+          name: "Amani Medical Centre",
+          type: "General & Family Care",
+          rating: "4.8",
+          distance: "1.2 km",
+          desc: "A full-service neighbourhood clinic offering general consultations, family care and routine health services.",
+          times: ["09:00", "09:30", "10:30", "11:00", "13:30", "14:00"],
+        },
+        {
+          id: 2,
+          name: "Westlands Health Hub",
+          type: "Specialist & Wellness",
+          rating: "4.7",
+          distance: "3.4 km",
+          desc: "Modern outpatient centre with general practitioners and selected specialist services.",
+          times: ["08:30", "09:00", "10:00", "12:30", "15:00", "16:00"],
+        },
+        {
+          id: 3,
+          name: "MediCare Kilimani",
+          type: "General Practice",
+          rating: "4.6",
+          distance: "4.1 km",
+          desc: "Accessible primary care with flexible weekday and weekend appointment hours.",
+          times: ["08:00", "09:30", "11:30", "12:00", "14:30", "17:00"],
+        },
+      ];
+      let s = { screen: "welcome", clinic: 1, slot: null, nav: "home", q: "", auth: 1 };
+      const app = document.getElementById("app"),
+        nav = document.getElementById("nav"),
+        toast = document.getElementById("toast");
+      const C = () => clinics.find((x) => x.id === s.clinic);
+      function navUI() {
+        nav.innerHTML = ["home", "find", "appointments", "profile"]
+          .map(
+            (x, i) =>
+              `<button class="${s.nav === x ? "active" : ""}" data-n="${x}"><i>${["⌂", "⌕", "▣", "◯"][i]}</i>${x[0].toUpperCase() + x.slice(1)}</button>`,
+          )
+          .join("");
+        nav.querySelectorAll("[data-n]").forEach(
+          (b) =>
+            (b.onclick = () => {
+              s.nav = b.dataset.n;
+              s.screen = b.dataset.n === "find" ? "search" : b.dataset.n;
+              render();
+            }),
+        );
+      }
+      function welcome() {
+        return `<div style="height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:45px 25px 30px;background:radial-gradient(circle at 80% 20%,#2b8b6722,transparent 32%)"><div><div class="brand">CARE<span>SLOT</span></div><div style="margin-top:110px;font-size:48px;line-height:.96;letter-spacing:-.06em;font-weight:950">Healthcare,<br><span style="color:var(--g)">on your time.</span></div><p style="font-size:13px;line-height:1.6;color:var(--m);max-width:300px;margin-top:17px">Find trusted clinics, see appointment availability and book without phone calls.</p></div><div><button class="primary" id="start" style="width:100%">Get started →</button><p style="text-align:center;font-size:9px;color:#65736e;margin-top:12px">Secure appointment booking</p></div></div>`;
+      }
+      function auth() {
+        return `<div><div class="top"><div class="brand">CARE<span>SLOT</span></div></div><div class="form" style="padding-top:48px"><h1 style="font-size:28px;letter-spacing:-.04em">${s.auth === 1 ? "Welcome back" : "Create your account"}</h1><p style="font-size:11px;color:var(--m);line-height:1.5">${s.auth === 1 ? "Sign in to manage your appointments." : "A few details are enough to get started."}</p><label class="label">Phone number</label><input class="field" placeholder="+254 7XX XXX XXX"><label class="label">Password</label><input class="field" type="password" placeholder="••••••••"><button class="primary" id="go" style="width:100%">${s.auth === 1 ? "Sign in" : "Create account"}</button><button id="toggle" style="width:100%;font-size:10px;color:var(--g);margin-top:15px">${s.auth === 1 ? "New here? Create an account" : "Already have an account? Sign in"}</button><div style="margin:28px 0;text-align:center;color:#56635e;font-size:9px">OR</div><button class="secondary" style="width:100%">Continue with Google</button></div></div>`;
+      }
+      function home() {
+        return `<div><div class="top"><div class="brand">CARE<span>SLOT</span></div><div class="avatar">DG</div></div><div class="hello"><small>Tuesday, 7 October</small><h1>Good evening, Dylan</h1></div><div class="card hero"><b>Book your next visit</b><p>Find a nearby clinic and choose an available appointment time in minutes.</p><button class="primary" id="find" >Find a clinic →</button></div><div class="section"><div class="head"><h2>Upcoming appointment</h2><span>View all</span></div><div class="card" style="margin:0"><b style="font-size:13px">Amani Medical Centre</b><p style="font-size:10px;color:var(--m)">General consultation · Thu, 9 Oct · 10:30</p><button class="secondary" style="height:34px;font-size:10px">View appointment</button></div></div><div class="section"><div class="head"><h2>Nearby clinics</h2><span>3 available</span></div><div class="clinics">${clinics.map((x) => `<button class="clinic" data-c="${x.id}"><div class="pic"><b>${x.name}</b></div><div class="clinicInfo"><strong>★ ${x.rating} · ${x.distance}</strong><span>${x.type}</span></div></button>`).join("")}</div></div><div class="section"><div class="head"><h2>Specialties</h2></div><div class="specialties">${[
+          ["✚", "General"],
+          ["♡", "Dental"],
+          ["◉", "Vision"],
+          ["＋", "Labs"],
+        ]
+          .map((x) => `<button class="specialty"><i>${x[0]}</i><span>${x[1]}</span></button>`)
+          .join("")}</div></div></div>`;
+      }
+      function search() {
+        let q = s.q.toLowerCase(),
+          list = clinics.filter((x) => (x.name + " " + x.type).toLowerCase().includes(q));
+        return `<div><div class="top"><h2 style="margin:0;font-size:21px">Find a clinic</h2></div><div class="search">⌕<input id="q" value="${s.q}" placeholder="Clinic, service or specialty"></div><div class="section"><div class="head"><h2>${q ? list.length + " results" : "Recommended near you"}</h2><span>Filter</span></div>${list.length ? `<div style="display:grid;gap:10px">${list.map((x) => `<button class="clinic" style="width:100%;text-align:left" data-c="${x.id}"><div class="pic"><b>${x.name}</b></div><div class="clinicInfo"><strong>★ ${x.rating} · ${x.distance}</strong><span>${x.type}</span></div></button>`).join("")}</div>` : `<div class="empty"><strong>No clinics found</strong>Try a different clinic name or service.<br><button class="secondary" id="clear" style="margin-top:12px">Clear search</button></div>`}</div></div>`;
+      }
+      function details() {
+        let x = C();
+        return `<div><div class="detailHero"><button class="back" id="back">‹</button><div><h1>${x.name}</h1><p>${x.type} · ★ ${x.rating} · ${x.distance}</p></div></div><div class="detailBody"><div class="rating"><b>★★★★★</b> Highly rated by patients</div><p class="copy">${x.desc}</p><div class="facts"><div><small>Distance</small><b>${x.distance}</b></div><div><small>Open</small><b>08–18</b></div><div><small>Booking</small><b>Instant</b></div></div><div class="slotTitle">Choose an appointment time</div><div class="slots">${x.times.map((t, i) => `<button class="slot" data-slot="${t}" ${i === 2 ? "disabled" : ""}>${t}</button>`).join("")}</div><p style="font-size:9px;color:#66756f">Greyed-out times are already booked.</p><button class="primary" id="continue" style="width:100%;margin-top:12px" disabled>Continue</button></div></div>`;
+      }
+      function form() {
+        return `<div><div class="top"><button class="back" id="back" style="position:relative;top:0;left:0">‹</button><h2 style="margin:0;font-size:15px">Patient details</h2><span style="font-size:10px;color:var(--m)">2 of 2</span></div><div class="steps"><i class="on"></i><i class="on"></i></div><div class="form"><div class="summary"><b>${C().name}</b><span>General consultation</span><span>${s.slot} · Thu, 9 Oct</span></div><label class="label">Full name</label><input class="field" value="Dylan Gathia"><label class="label">Phone number</label><input class="field" value="+254 7XX XXX XXX"><label class="label">Reason for visit</label><input class="field" placeholder="e.g. General check-up"><label class="label">Payment</label><button class="radio on"><i></i>Pay at clinic</button><button class="radio"><i></i>Insurance / medical cover</button><button class="primary" id="confirm" style="width:100%;margin-top:12px">Confirm appointment</button></div></div>`;
+      }
+      function success() {
+        return `<div class="confirm"><div class="check">✓</div><h1>Appointment confirmed</h1><p>Your visit has been booked. Keep this confirmation for your appointment.</p><div class="ticket"><div><span>Clinic</span><b>${C().name}</b></div><div><span>Service</span><b>General consultation</b></div><div><span>Date</span><b>Thu, 9 October</b></div><div><span>Time</span><b>${s.slot}</b></div><div><span>Status</span><b style="color:var(--g)">Confirmed</b></div></div><button class="primary" id="home" style="width:100%">Back to home</button><button class="secondary" id="appts" style="width:100%;margin-top:8px">View appointment</button></div>`;
+      }
+      function loading() {
+        return `<div class="state"><div style="height:120px"></div><div class="spinner"></div><strong>Finding available clinics</strong><p>Checking nearby providers and appointment availability…</p></div>`;
+      }
+      function appointments() {
+        return `<div><div class="top"><h2 style="margin:0;font-size:21px">Appointments</h2></div><div class="section"><div class="head"><h2>Upcoming</h2></div><div class="card" style="margin:0"><b style="font-size:13px">Amani Medical Centre</b><p style="font-size:10px;color:var(--m)">General consultation · Thu, 9 Oct · 10:30</p><span style="padding:5px 8px;border-radius:6px;background:#153d30;color:var(--g);font-size:9px;font-weight:900">CONFIRMED</span></div></div><div class="section"><div class="head"><h2>Past</h2></div><div class="empty" style="padding-top:25px">No past appointments</div></div></div>`;
+      }
+      function profile() {
+        return `<div class="profile"><div class="avatar" style="width:58px;height:58px;margin-bottom:14px">DG</div><h1 style="font-size:26px;margin:0 0 4px">Dylan Gathia</h1><p style="font-size:11px;color:var(--m)">Account details and preferences</p>${["Personal details", "Notifications", "Privacy", "Help & support"].map((x, i) => `<button class="setting"><div><b>${x}</b><span>${["Name, phone and contact information", "Appointment reminders and updates", "Data and account controls", "FAQs and contact support"][i]}</span></div><b>›</b></button>`).join("")}</div>`;
+      }
+      function render() {
+        app.innerHTML = {
+          welcome,
+          auth,
+          home,
+          search,
+          details,
+          form,
+          success,
+          loading,
+          appointments,
+          profile,
+        }[s.screen]();
+        navUI();
+        bind();
+        app.scrollTop = 0;
+      }
+      function bind() {
+        let x = document.getElementById("start");
+        if (x)
+          x.onclick = () => {
+            s.screen = "auth";
+            render();
+          };
+        x = document.getElementById("go");
+        if (x)
+          x.onclick = () => {
+            s.screen = "home";
+            s.nav = "home";
+            render();
+          };
+        x = document.getElementById("toggle");
+        if (x)
+          x.onclick = () => {
+            s.auth = s.auth === 1 ? 2 : 1;
+            render();
+          };
+        x = document.getElementById("find");
+        if (x)
+          x.onclick = () => {
+            s.screen = "loading";
+            render();
+            setTimeout(() => {
+              s.screen = "search";
+              s.nav = "find";
+              render();
+            }, 650);
+          };
+        app.querySelectorAll("[data-c]").forEach(
+          (b) =>
+            (b.onclick = () => {
+              s.clinic = +b.dataset.c;
+              s.screen = "details";
+              render();
+            }),
+        );
+        x = document.getElementById("q");
+        if (x)
+          x.oninput = (e) => {
+            s.q = e.target.value;
+            render();
+            let q = document.getElementById("q");
+            q.focus();
+            q.setSelectionRange(q.value.length, q.value.length);
+          };
+        x = document.getElementById("clear");
+        if (x)
+          x.onclick = () => {
+            s.q = "";
+            render();
+          };
+        x = document.getElementById("back");
+        if (x)
+          x.onclick = () => {
+            s.screen = s.screen === "form" ? "details" : "search";
+            render();
+          };
+        app.querySelectorAll("[data-slot]").forEach(
+          (b) =>
+            (b.onclick = () => {
+              s.slot = b.dataset.slot;
+              app.querySelectorAll(".slot").forEach((z) => z.classList.remove("selected"));
+              b.classList.add("selected");
+              document.getElementById("continue").disabled = false;
+            }),
+        );
+        x = document.getElementById("continue");
+        if (x)
+          x.onclick = () => {
+            s.screen = "form";
+            render();
+          };
+        x = document.getElementById("confirm");
+        if (x)
+          x.onclick = () => {
+            s.screen = "success";
+            render();
+            show("Appointment confirmed");
+          };
+        x = document.getElementById("home");
+        if (x)
+          x.onclick = () => {
+            s.screen = "home";
+            s.nav = "home";
+            render();
+          };
+        x = document.getElementById("appts");
+        if (x)
+          x.onclick = () => {
+            s.screen = "appointments";
+            s.nav = "appointments";
+            render();
+          };
+      }
+      function show(t) {
+        toast.textContent = t;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 1300);
+      }
+      render();
+    </script>
+  </body>
+</html>
